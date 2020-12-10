@@ -14,11 +14,12 @@ class AbstractNeuron():
 		Current neuron output
 	"""
 
-	def __init__(self, amplitude=1):
+	def __init__(self, amplitude=1, label=""):
 		self.amplitude = amplitude
 		self.I = 0
 		self.out = 0
 		self.V = 0
+		self.label = label
 
 	def update_rng(self, rng):
 		if hasattr(self, 'rng'):
@@ -51,8 +52,8 @@ class LIF(AbstractNeuron):
 
 	count = 0
 
-	def __init__(self, m, V_init=0, V_reset=0, V_min=0, thr=1, amplitude=1, I_e=0, noise=0, rng=None, ID=None, increment_count=True):
-		AbstractNeuron.__init__(self, amplitude)
+	def __init__(self, m, V_init=0, V_reset=0, V_min=0, thr=1, amplitude=1, I_e=0, noise=0, rng=None, ID=None, increment_count=True, label=""):
+		AbstractNeuron.__init__(self, amplitude, label)
 		self.m = m
 		self.V = V_init
 		self.V_reset = V_reset
