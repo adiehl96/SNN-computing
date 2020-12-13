@@ -2,6 +2,7 @@ import numpy as np
 from .detectors import *
 import matplotlib.ticker as ticker
 import networkx as nx
+from .gui import NetworkGUI
 
 class Simulator():
 	"""Simulator
@@ -54,6 +55,7 @@ class Simulator():
 				detector.step()
 
 		self.print_detectors(steps)
+		self.open_GUI()
 
 	def to_inet_string(self):
 		inet_str = ''
@@ -88,3 +90,6 @@ class Simulator():
 			fig.axes[i+2].grid(b=None, which='major')
 			fig.axes[i+2].xaxis.set_major_locator(ticker.MultipleLocator(1))
 		plt.show()
+
+	def open_GUI(self):
+		gui = NetworkGUI(self.network.graph)
