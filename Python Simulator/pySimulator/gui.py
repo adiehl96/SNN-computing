@@ -1,6 +1,7 @@
+import os
 import tkinter as tk
 import networkx as nx
-
+from tkinter import filedialog
 
 class NetworkGUI:
     def __init__(self, graph):
@@ -9,11 +10,30 @@ class NetworkGUI:
         self.padding = 25
         self.graph = graph
         top = tk.Tk()
-        top.title("test gui")
-        self.canvas = tk.Canvas(top, width=800, height=500, bg='white')
+        rootframe = tk.Frame(top)
+        menuframe = tk.Frame(rootframe)
+
+        menu = tk.Menu(menuframe)
+        top.config(menu=menu)
+        fileMenu = tk.Menu(menu)
+        fileMenu.add_command(label='open', command=self.open_file)
+        fileMenu.add_command(label='quit', command=top.destroy)
+        menu.add_cascade(label='File', menu=fileMenu)
+
+        menuframe.pack(side = tk.TOP)
+
+        canvasframe = tk.Frame(rootframe)
+        self.canvas = tk.Canvas(canvasframe, width=800, height=500, bg='white')
         self.draw_graph()
         self.canvas.pack()
+        canvasframe.pack(side = tk.BOTTOM)
+        rootframe.pack()
         top.mainloop()
+
+    def open_file(self):
+        openloc = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file = filedialog.askopenfilename(initialdir=openloc, title="Select Network File")
+        print(file)
 
     def draw_graph(self):
         '''
@@ -31,7 +51,7 @@ class NetworkGUI:
             # shift positions to right upper quadrant instead of centered around 0
             x,y = pos[0], pos[1]
             x,y = self._translate_pos(x,y)
-            self.place_node(x,y)
+            self.place_node(x,y, label=node)
 
         #  Connections
 
@@ -45,13 +65,15 @@ class NetworkGUI:
 
 
 
-    def place_node(self, xpos, ypos, diam=20):
+    def place_node(self, xpos, ypos, label=":)", diam=20):
         x1 = xpos - diam/2
         y1 = ypos - diam/2
         x2 = xpos + diam/2
         y2 = ypos + diam/2
-
+        
         self.canvas.create_oval(x1,y1,x2,y2,outline="black", fill="black")
+        label = tk.Label(self.canvas, text=label).place(x=xpos, y=ypos)
+        
 
 
     def draw_connection(self, n1pos, n2pos):
