@@ -32,7 +32,7 @@ class Simulator():
 		return detector
 		
 
-	def run(self, steps):
+	def run(self, steps, no_plotting=False):
 		"""Run the simulator
 
 	    Parameters
@@ -53,7 +53,8 @@ class Simulator():
 			for detector in self.detectors:
 				detector.step()
 
-		self.print_detectors(steps)
+		if not no_plotting:
+			self.print_detectors(steps)
 
 	def to_inet_string(self):
 		inet_str = ''
